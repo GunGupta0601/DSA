@@ -184,6 +184,81 @@ void countSort(int A[], int n)
   }
 }
 
+struct Node
+{
+  int data;
+  struct Node *next;
+} *front = NULL, *rear = NULL;
+;
+
+void insert(int x)
+{
+  struct Node *t;
+  t = (struct Node *)malloc(sizeof(struct Node));
+  if (t == NULL)
+  {
+    printf("Queue is full.\n");
+  }
+  else
+  {
+    t->data = x;
+    t->next = NULL;
+    if (front == NULL)
+    {
+      front = rear = t;
+    }
+    else
+    {
+      rear->next = t;
+      rear = t;
+    }
+  }
+}
+
+int delete()
+{
+  int x = -1;
+  struct Node *t;
+  if (front == NULL)
+  {
+    printf("Queue is empty.\n");
+  }
+  else
+  {
+    x = front->data;
+    t = front;
+    front = front->next;
+    free(t);
+  }
+  return x;
+}
+
+void binSort(int A[], int n)
+{
+  int max, i, j;
+  struct Node **Bins;
+  max = findMax(A, n);
+  *Bins = (struct Node *)malloc((max + 1) * sizeof(struct Node));
+  for (i = 0; i < max + 1; i++)
+  {
+    Bins[i] = NULL;
+  }
+  for (i = 0; i < n; i++)
+  {
+    insert(A[i]);
+  }
+  i = 0, j = 0;
+  while (i < max + 1)
+  {
+    while (Bins[i] != NULL)
+    {
+      A[j++] = delete(Bins[i]);
+      Bins[j]--;
+    }
+    i++;
+  }
+}
+
 int main()
 {
   int A[] = {3, 7, 9, 10, 6, 5, 12, 4, 11, 2}, n = 10, i;
@@ -195,7 +270,8 @@ int main()
   // quickSort(A, 0, n - 1);
   // ImergeSort(A, n);
   // mergeSort(A, 0, n - 1);
-  countSort(A, n);
+  // countSort(A, n);
+  binSort(A, n);
   for (i = 0; i < n; i++)
   {
     printf("%d ", A[i]);
