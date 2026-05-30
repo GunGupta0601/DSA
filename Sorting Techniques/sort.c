@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void swap(int *a, int *b)
 {
@@ -141,6 +142,48 @@ void mergeSort(int A[], int l, int h)
   }
 }
 
+int findMax(int A[], int n)
+{
+  int max = __INT16_MAX__;
+  int i;
+  for (i = 0; i < n; i++)
+  {
+    if (A[i] > max)
+    {
+      max = A[i];
+    }
+  }
+  return max;
+}
+
+void countSort(int A[], int n)
+{
+  int max, i, j, *C;
+  max = findMax(A, n);
+  C = (int *)malloc((max + 1) * sizeof(int));
+  for (i = 0; i < max + 1; i++)
+  {
+    C[i] = 0;
+  }
+  for (i = 0; i < n; i++)
+  {
+    C[A[i]]++;
+  }
+  i = 0, j = 0;
+  while (i < max + 1)
+  {
+    if (C[i] > 0)
+    {
+      A[i++] = j;
+      C[j]--;
+    }
+    else
+    {
+      j++;
+    }
+  }
+}
+
 int main()
 {
   int A[] = {3, 7, 9, 10, 6, 5, 12, 4, 11, 2}, n = 10, i;
@@ -151,7 +194,8 @@ int main()
   // SelectionSort(A, n);
   // quickSort(A, 0, n - 1);
   // ImergeSort(A, n);
-  mergeSort(A, 0, n - 1);
+  // mergeSort(A, 0, n - 1);
+  countSort(A, n);
   for (i = 0; i < n; i++)
   {
     printf("%d ", A[i]);
